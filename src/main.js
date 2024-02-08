@@ -2,7 +2,7 @@ import * as THREE from "three";
 import "./style.css";
 import { OrbitControls } from "three/addons/controls/OrbitControls";
 import { DragControls } from "three/addons/controls/DragControls.js";
-import { createNoise3D } from "simplex-noise";
+import { createNoise4D } from "simplex-noise";
 
 // app
 const app = document.querySelector("#app");
@@ -16,7 +16,7 @@ document.body.appendChild(renderer.domElement);
 
 // scene
 const scene = new THREE.Scene();
-scene.background = new THREE.Color("white");
+scene.background = new THREE.Color("black");
 
 // perspective camera
 const camera = new THREE.PerspectiveCamera(
@@ -44,7 +44,7 @@ orbitControls.maxDistance = 10000;
 orbitControls.target = new THREE.Vector3(0, 0, 0);
 
 //noise
-const noise3D = createNoise3D();
+const noise3D = createNoise4D();
 
 // resize
 const onResize = () => {
@@ -70,7 +70,7 @@ for (let x = 0; x < 20; x++) {
   for (let y = 0; y < 20; y++) {
     for (let z = 0; z < 20; z++) {
       path[i] = new THREE.Mesh(sphereGeometry, sphereMaterial.clone());
-      path[i].position.set(x * 3 - 10, y * 3 - 10, z * 3 - 10);
+      path[i].position.set(x * 1 - 10, y * 1 - 10, z * 1 - 10);
       scene.add(path[i]);
       i++;
     }
@@ -78,6 +78,7 @@ for (let x = 0; x < 20; x++) {
 }
 
 let origin = new THREE.Vector3(0, 0, 0);
+let t = 0;
 
 const animate = () => {
   requestAnimationFrame(animate);
@@ -87,18 +88,21 @@ const animate = () => {
   i = 0;
 
   for (let x = 0; x < 20; x++) {
-    xoff += 0.01 + origin.x;
+    xoff += 0.001 + origin.x;
     for (let y = 0; y < 20; y++) {
-      yoff += 0.01;
+      yoff += 0.001;
       for (let z = 0; z < 20; z++) {
-        zoff + 0.01;
-        path[i].material.emissive.r = noise3D(xoff, yoff, zoff) * 1;
+        zoff += 0.001;
+        path[i].material.emissive.r = Math.abs(noise3D(xoff, yoff, zoff, t));
         i++;
       }
+      //zoff = 0;
     }
+    //yoff = 0;
   }
 
-  origin.x += 0.5;
+  //origin.x += 0.001;
+  t += 0.01;
 
   renderer.render(scene, camera);
 
