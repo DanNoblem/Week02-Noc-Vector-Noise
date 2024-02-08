@@ -76,25 +76,29 @@ for (let x = 0; x < 20; x++) {
     }
   }
 }
-let xoff = 0,
-  yoff = 0,
-  zoff = 0;
+
+let origin = new THREE.Vector3(0, 0, 0);
 
 const animate = () => {
   requestAnimationFrame(animate);
+  let xoff = 0,
+    yoff = 0,
+    zoff = 0;
   i = 0;
 
   for (let x = 0; x < 20; x++) {
-    xoff += 0.01;
+    xoff += 0.01 + origin.x;
     for (let y = 0; y < 20; y++) {
       yoff += 0.01;
       for (let z = 0; z < 20; z++) {
         zoff + 0.01;
-        path[i].material.emissive.r = noise3D(xoff, yoff, zoff);
+        path[i].material.emissive.r = noise3D(xoff, yoff, zoff) * 1;
         i++;
       }
     }
   }
+
+  origin.x += 0.5;
 
   renderer.render(scene, camera);
 
