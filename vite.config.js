@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  base: "/Week02-Noc-Vector-Noise",
+  base: "/Week02-Noc-Vector-Noise/",
   build: {
     outDir: "../docs",
     rollupOptions: {
